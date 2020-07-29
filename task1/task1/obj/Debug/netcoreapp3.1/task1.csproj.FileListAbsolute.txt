@@ -1,0 +1,13 @@
+F:\altexsoft-lab\altexsoft-lab-2020\task1\task1\bin\Debug\netcoreapp3.1\task1.exe
+F:\altexsoft-lab\altexsoft-lab-2020\task1\task1\bin\Debug\netcoreapp3.1\task1.deps.json
+F:\altexsoft-lab\altexsoft-lab-2020\task1\task1\bin\Debug\netcoreapp3.1\task1.runtimeconfig.json
+F:\altexsoft-lab\altexsoft-lab-2020\task1\task1\bin\Debug\netcoreapp3.1\task1.runtimeconfig.dev.json
+F:\altexsoft-lab\altexsoft-lab-2020\task1\task1\bin\Debug\netcoreapp3.1\task1.dll
+F:\altexsoft-lab\altexsoft-lab-2020\task1\task1\bin\Debug\netcoreapp3.1\task1.pdb
+F:\altexsoft-lab\altexsoft-lab-2020\task1\task1\obj\Debug\netcoreapp3.1\task1.csprojAssemblyReference.cache
+F:\altexsoft-lab\altexsoft-lab-2020\task1\task1\obj\Debug\netcoreapp3.1\task1.AssemblyInfoInputs.cache
+F:\altexsoft-lab\altexsoft-lab-2020\task1\task1\obj\Debug\netcoreapp3.1\task1.AssemblyInfo.cs
+F:\altexsoft-lab\altexsoft-lab-2020\task1\task1\obj\Debug\netcoreapp3.1\task1.csproj.CoreCompileInputs.cache
+F:\altexsoft-lab\altexsoft-lab-2020\task1\task1\obj\Debug\netcoreapp3.1\task1.dll
+F:\altexsoft-lab\altexsoft-lab-2020\task1\task1\obj\Debug\netcoreapp3.1\task1.pdb
+F:\altexsoft-lab\altexsoft-lab-2020\task1\task1\obj\Debug\netcoreapp3.1\task1.genruntimeconfig.cache
