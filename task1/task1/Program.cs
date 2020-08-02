@@ -41,34 +41,41 @@ namespace task1
                         Console.WriteLine("Вы ввели некоректный номер метода!");
                         Console.ReadKey();
                         break;
-                    }
-
-                
-            }
-
-            Change_Text();
-            Read_Write_Text();
-            Read_3_String();
-            ReadDir();
+                    }                
+            }            
         }
 
         static string ReadText()
         {
-            StreamReader stream = new StreamReader(@"F:\altexsoft-lab\altexsoft-lab-2020\task1\test_text.txt"); // Передаем путь к считываемому файлу 
-            string textStream = stream.ReadToEnd(); // Считываем весь текс с текстового файла
-            return textStream;
+            Console.Write("Введите путь к файлу с которым хотите работать: ");
+            string path = Console.ReadLine();
+            try
+            {
+                using (StreamReader stream = new StreamReader(path))// Передаем путь к считываемому файлу 
+                {
+                    string textStream = stream.ReadToEnd();// Считываем весь текс с текстового файла
+                    stream.Close();
+                    return textStream;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.ReadKey();
+                return null;
+            }           
         }
-
-
 
         static void Change_Text()
         {
             string textStream = ReadText();
+            if (!String.IsNullOrEmpty(textStream))
+            {            
             Console.Write("Введите слово или символ который необходимо удалить: ");
             string word = Console.ReadLine();
             if (String.IsNullOrEmpty(word)) // Проверяем введена ли пустая строка
             {
-                Console.WriteLine("Пустая строка");
+                Console.WriteLine("Вы ввели пустую строку");
             }
             else
             {
@@ -80,17 +87,17 @@ namespace task1
                     string answer = Console.ReadLine().ToLower();
                     if (answer == "y")
                     {
-
-                        string writePath = @"F:\altexsoft-lab\altexsoft-lab-2020\task1\test_text_replace.txt"; // Путь к новому файлу
-
+                        Console.Write("Введите путь куда хотите сохранить файл: ");
+                        string writePath = (Console.ReadLine()); // Путь к новому файлу
+                        string writePathFile = writePath + "test_text_replace.txt";
                         try
                         {
-                            using (StreamWriter sw = new StreamWriter(writePath, false, System.Text.Encoding.Default)) //Записуем измененный текст в файл(новый или перезаписываем существующий)
+                            using (StreamWriter sw = new StreamWriter(writePathFile, false, System.Text.Encoding.Default)) //Записуем измененный текст в файл(новый или перезаписываем существующий)
                             {
                                 sw.WriteLine(textReplace);
+                                sw.Close();
                             }
-
-                            Console.WriteLine("Запись выполнена в файл: " + writePath);
+                            Console.WriteLine("Запись выполнена в файл: " + writePathFile);
                         }
                         catch (Exception e)
                         {
@@ -100,22 +107,24 @@ namespace task1
                 }
                 else
                 {
-                    Console.WriteLine("Нет такого слова");
+                    Console.WriteLine("В тексте нет такого слова");
                 }
             }
+
             Console.WriteLine("Для завершения нажмите любую кнопку");
             Console.ReadKey();
+            }
         }
 
 
         static void Read_Write_Text()
         {
             string textStream = ReadText();
+            if (!String.IsNullOrEmpty(textStream))
+            {            
             string[] textArray = textStream.Split(new char[] { ' ', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries); //Разбиваем текст на слова
             string word;
             List<string> allWords = new List<string>(); // Создаем список
-
-
             for (int i = 0, j = i + 1; i < textArray.Length; j++, i++)
             {
                 if (j % 10 == 0) //Находим каждое 10 слово
@@ -125,18 +134,22 @@ namespace task1
                     word = textArray[i];
                     allWords.Add(word); // Добавляем в список слово
                 }
-
             }
-            Console.WriteLine(String.Join(',', allWords)); // Объеденяем строку с разделителеи
+            Console.WriteLine("Количество слов в тексте: " + textArray.Length); //Выводим общее количество слов в тексте
             Console.WriteLine(); //Переходим на новую строку
-            Console.WriteLine("Количество слов: " + textArray.Length); //Выводим общее количество слов в тексте
+            Console.WriteLine(String.Join(',', allWords)); // Объеденяем строку с разделителеи 
+            Console.WriteLine();
+            Console.WriteLine("Для завершения нажмите любую кнопку");
             Console.ReadKey();
+            }
         }
 
 
         static void Read_3_String()
         {
             string textStream = ReadText();
+            if (!String.IsNullOrEmpty(textStream))
+            {            
             string[] textArray = textStream.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries); //Разбиваем текст на предложения
             string text3 = textArray[2]; // Находим третью строку
             textArray = text3.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries); // Разбиваем на строки
@@ -148,12 +161,12 @@ namespace task1
             }
             Console.WriteLine();
             Console.ReadKey();
+            }
         }
 
 
         static void ReadDir()
         {
-
             Console.Write("Введите путь к папке: ");
             string path = Console.ReadLine(); // Передаем путь
             Dictionary<int, Dir> dir = new Dictionary<int, Dir>(); // Создаем словарь
@@ -162,22 +175,18 @@ namespace task1
                 Console.WriteLine("Подкаталоги:");
                 string[] dirs = Directory.GetDirectories(path); // Получаем список каталогов
                 IEnumerable<string> sortedDirs = dirs.OrderBy(i => i);
-
                 int i = 0;
                 foreach (string s in sortedDirs)
                 {
-
                     ++i;
                     DirectoryInfo dirInfo = new DirectoryInfo(s); // Получаем информацию о каталоге
                     dir.Add(i, new Dir { Name = dirInfo.Name, Path = dirInfo.FullName }); // Добавляем в слварь номер по порядку и имя каталога и его полный путь
-
                 }
                 int j = 0;
                 foreach (var s in dir.Values)
                 {
                     Console.WriteLine($"{++j}. {s.Name}"); // Выводим имена каталогов
                 }
-
                 Console.WriteLine();
                 Console.Write("Выберите папку по идентификатору: ");
                 int id = Int32.Parse(Console.ReadLine());
@@ -190,12 +199,12 @@ namespace task1
                     DirectoryInfo drInfo = new DirectoryInfo(s);  // Получаем имена файлов
                     Console.WriteLine(drInfo.Name);
                 }
-
             }
             else
             {
                 Console.WriteLine("Указаный путь не существует");
             }
+            Console.WriteLine("Для завершения нажмите любую кнопку");
             Console.ReadKey();
         }
     }
