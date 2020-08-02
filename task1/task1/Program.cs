@@ -10,6 +10,24 @@ namespace task1
     {
         static void Main(string[] args)
         {
+            foreach (var item in args)
+            {
+                switch (item)
+                {
+                    case "1":
+                        Change_Text();
+                        break;
+                    case "2":
+                        Read_Write_Text();
+                        break;
+                    case "3":
+                        Read_3_String();
+                        break;
+                    case "4":
+                        ReadDir();
+                        break;                    
+                }
+            }
             while (true)
             {
                 Console.Clear();
@@ -36,11 +54,7 @@ namespace task1
                             ReadDir();
                             break;
                         case "5":
-                            return;
-                        default:
-                        Console.WriteLine("Вы ввели некоректный номер метода!");
-                        Console.ReadKey();
-                        break;
+                            return;                        
                     }                
             }            
         }
