@@ -55,21 +55,17 @@ namespace task1
         {
             Console.Write("Введите путь к файлу с которым хотите работать: ");
             string path = Console.ReadLine();
-            try
-            {
-                using (StreamReader stream = new StreamReader(path))// Передаем путь к считываемому файлу 
-                {
-                    string textStream = stream.ReadToEnd();// Считываем весь текс с текстового файла
-                    stream.Close();
-                    return textStream;
-                }
+            if (File.Exists(path))
+            {            
+                string textStream = File.ReadAllText(path);// Считываем весь текс с текстового файла
+                return textStream;                
             }
-            catch (Exception e)
+            else
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine("Указаный файл не существует!");
                 Console.ReadKey();
                 return null;
-            }           
+            }                    
         }
 
         static void Change_Text()
