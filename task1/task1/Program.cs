@@ -9,26 +9,12 @@ namespace task1
     class Program
     {
         static void Main(string[] args)
-        {
-            foreach (var item in args)
+        {   int flag = 0;
+            foreach (var userChoise in args)
             {
-                switch (item)
-                {
-                    case "1":
-                        Change_Text();
-                        break;
-                    case "2":
-                        Read_Write_Text();
-                        break;
-                    case "3":
-                        Read_3_String();
-                        break;
-                    case "4":
-                        ReadDir();
-                        break;                    
-                }
+                UserChoies(userChoise, ref flag);
             }
-            while (true)
+            while (flag == 0)
             {
                 Console.Clear();
                 Console.WriteLine("Выберите один из методов:\n" +
@@ -39,24 +25,30 @@ namespace task1
                     "5. Закрыть программу.");
                 Console.Write("Ваш выбор: ");
                 string userChoise = Console.ReadLine();
-                switch (userChoise)
-                    {
-                        case "1":
-                            Change_Text();
-                            break;
-                        case "2":
-                            Read_Write_Text();
-                            break;
-                        case "3":
-                            Read_3_String();
-                            break;
-                        case "4":
-                            ReadDir();
-                            break;
-                        case "5":
-                            return;                        
-                    }                
+                UserChoies(userChoise, ref flag);     
             }            
+        }
+
+        static void UserChoies(string userChoise, ref int flag)
+        {
+            switch (userChoise)
+            {
+                case "1":
+                    Change_Text();
+                    break;
+                case "2":
+                    Read_Write_Text();
+                    break;
+                case "3":
+                    Read_3_String();
+                    break;
+                case "4":
+                    ReadDir();
+                    break;
+                case "5":
+                    flag = 1;
+                    break;
+            }
         }
 
         static string ReadText()
