@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using System.Text.RegularExpressions;
 
 namespace task1
 {
@@ -123,20 +123,21 @@ namespace task1
         {
             string textStream = ReadText();
             if (!String.IsNullOrEmpty(textStream))
-            {            
-            string[] textArray = textStream.Split(new char[] { ' ', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries); //Разбиваем текст на слова
-            string word;
-            List<string> allWords = new List<string>(); // Создаем список
-            for (int i = 0, j = i + 1; i < textArray.Length; j++, i++)
             {
-                if (j % 10 == 0) //Находим каждое 10 слово
+                Regex regex = new Regex(@"[^\w'\s]+", RegexOptions.Compiled);
+                string replaceText = regex.Replace(textStream, "").Trim(); 
+                Regex regex1 = new Regex(@"\s+", RegexOptions.Compiled);
+                string[] textArray = regex1.Split(replaceText); //Разбиваем текст на слова
+                string word;
+                List<string> allWords = new List<string>(); // Создаем список
+                for (int i = 0, j = i + 1; i < textArray.Length; j++, i++)
                 {
-                    textArray[i] = textArray[i].Trim(new char[] { '.', ',', '?', '"', '(', ')' }); //Убираем спец символы
-                    //Console.Write(textArray[i] + ", "); //Выводим в одну строку каждое 10 слово через запятую
+                if (j % 10 == 0) //Находим каждое 10 слово
+                {                                     
                     word = textArray[i];
                     allWords.Add(word); // Добавляем в список слово
                 }
-            }
+                }
             Console.WriteLine("Количество слов в тексте: " + textArray.Length); //Выводим общее количество слов в тексте
             Console.WriteLine(); //Переходим на новую строку
             Console.WriteLine(String.Join(',', allWords)); // Объеденяем строку с разделителеи 
@@ -152,16 +153,21 @@ namespace task1
             string textStream = ReadText();
             if (!String.IsNullOrEmpty(textStream))
             {            
-            string[] textArray = textStream.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries); //Разбиваем текст на предложения
-            string text3 = textArray[2]; // Находим третью строку
-            textArray = text3.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries); // Разбиваем на строки
-            for (int i = 0; i < textArray.Length; i++)
+                string[] textArray = textStream.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries); //Разбиваем текст на предложения
+                string text3 = textArray[2]; // Находим третью строку
+                Regex regex = new Regex(@"[^\w'\s]+", RegexOptions.Compiled);
+                string replaceText = regex.Replace(text3, "").Trim();
+                Regex regex1 = new Regex(@"\s+", RegexOptions.Compiled);
+                string[] textArrayWord = regex1.Split(replaceText); //Разбиваем текст на слова
+                string word;
+                List<string> allWords = new List<string>();                
+            for (int i = 0; i < textArrayWord.Length; i++)
             {
-                textArray[i] = textArray[i].Trim(new char[] { '.', ',', '?', '"', '(', ')' }); //Убираем спец символы
-                textArray[i] = new string(textArray[i].ToCharArray().Reverse().ToArray()); // Меняем порядок букв в слове на обратный
-                Console.Write(textArray[i] + " ");
+                    word = new string(textArrayWord[i].ToCharArray().Reverse().ToArray()); // Меняем порядок букв в слове на обратный
+                    allWords.Add(word);                
             }
             Console.WriteLine();
+                Console.WriteLine(String.Join(' ', allWords));
             Console.ReadKey();
             }
         }
@@ -214,7 +220,6 @@ namespace task1
     {
         public string Name;
         public string Path;
-
     }
 }
 
