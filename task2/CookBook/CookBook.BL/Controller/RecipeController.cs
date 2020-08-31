@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Json;
+using System.Text.Json;
 
 namespace CookBook.BL.Controller
 {
@@ -19,12 +19,17 @@ namespace CookBook.BL.Controller
 
         public List<Recipe> GetRecipes()
         {
-            var jsonFormatter = new DataContractJsonSerializer(typeof(List<Recipe>));
-
-            using (var file = new FileStream(nameFile, FileMode.Open))
+            if (File.Exists(nameFile))
             {
-                var data = jsonFormatter.ReadObject(file) as List<Recipe>;
+                string json = File.ReadAllText(nameFile);
+
+                var data = JsonSerializer.Deserialize<List<Recipe>>(json);
                 return data;
+            }
+            else
+            {
+                Console.WriteLine("Файл не существует");
+                return null;
             }
         }
 
@@ -67,48 +72,60 @@ namespace CookBook.BL.Controller
 
         public void SaveRecipes()
         {
-            var jsonFormatter = new DataContractJsonSerializer(typeof(List<Recipe>));
-            using (var file = new FileStream(nameFile, FileMode.Create))
-            {
-                jsonFormatter.WriteObject(file, Recipes);
-            }
+            string json = JsonSerializer.Serialize<List<Recipe>>(Recipes);
+            File.WriteAllText(nameFile, json);
         }
 
         public Recipe CreateRecipe()
         {
+            Recipe recipe = new Recipe();
             Console.Write("Укажите название рецепта: ");
-            string name = Console.ReadLine();
+            recipe.Name = Console.ReadLine();
             Console.Write("Укажите описание: ");
-            string description = Console.ReadLine();
+            recipe.Description = Console.ReadLine();
             Console.Write("Выберите категорию рецепта: ");
-            int idCategory = int.Parse(Console.ReadLine());
+            int idCategory;
+            while (!int.TryParse(Console.ReadLine(), out idCategory))
+            {
+                Console.WriteLine("Не корректный выбор (введите число)");
+                Console.Write("Повторите выбор: ");
+            }
+            recipe.IdCategory = idCategory;
             List<Ingredient> ingredients = new List<Ingredient>();
             while (true)
             {
+                Ingredient ingredient = new Ingredient();
                 Console.Write("Укажите название ингредиента: ");
-                string nameIngredient = Console.ReadLine();
+                ingredient.Name = Console.ReadLine();
                 Console.Write("Укажите количество ингредиента: ");
-                double amountIngredient = double.Parse(Console.ReadLine());
-                Ingredient ingredient = new Ingredient(nameIngredient, amountIngredient);
+                double amountIngredient;
+                while (!double.TryParse(Console.ReadLine(), out amountIngredient))
+                {
+                    Console.WriteLine("Не корректный выбор (введите число)");
+                    Console.Write("Повторите выбор: ");
+                }
+                ingredient.Amount = amountIngredient;
                 ingredients.Add(ingredient);
                 Console.WriteLine("Нажмите ENTER для ввода еще одного ингредиента или любую другую кнопку для продолжения");
                 if (Console.ReadKey().Key != ConsoleKey.Enter)
                     break;
             }
+            recipe.Ingredients = ingredients;
             List<Step> steps = new List<Step>();
             int idStep = 0;
             while (true)
             {
                 idStep++;
+                Step step = new Step();
+                step.Number = idStep;
                 Console.Write("Инструкция к шагу приготовления: ");
-                string stepInstruction = Console.ReadLine();
+                step.Instruction = Console.ReadLine();
                 Console.WriteLine("Нажмите ENTER для следущей инструкции или любую другую кнопку для продолжения");
-                Step step = new Step(idStep, stepInstruction);
                 steps.Add(step);
                 if (Console.ReadKey().Key != ConsoleKey.Enter)
                     break;
             }
-            Recipe recipe = new Recipe(name, idCategory, description, ingredients, steps);
+            recipe.Steps = steps;
             return recipe;
         }
     }

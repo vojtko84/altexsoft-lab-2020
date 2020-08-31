@@ -1,20 +1,12 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
 
 namespace CookBook.BL.Model
 {
-    [DataContract]
+    [Serializable]
     public class Step
     {
-        [DataMember]
         public int Number { get; set; }
 
-        [DataMember]
         public string Instruction { get; set; }
-
-        public Step(int number, string instruction)
-        {
-            Number = number;
-            Instruction = instruction;
-        }
     }
 }

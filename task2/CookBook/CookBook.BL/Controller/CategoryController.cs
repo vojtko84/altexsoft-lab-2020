@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization.Json;
+using System.Text.Json;
 
 namespace CookBook.BL.Controller
 {
@@ -18,12 +18,17 @@ namespace CookBook.BL.Controller
 
         public List<Category> GetCategories()
         {
-            var jsonFormatter = new DataContractJsonSerializer(typeof(List<Category>));
-
-            using (var file = new FileStream(nameFile, FileMode.Open))
+            if (File.Exists(nameFile))
             {
-                var data = jsonFormatter.ReadObject(file) as List<Category>;
+                string json = File.ReadAllText(nameFile);
+
+                var data = JsonSerializer.Deserialize<List<Category>>(json);
                 return data;
+            }
+            else
+            {
+                Console.WriteLine("Файл не существует");
+                return null;
             }
         }
 

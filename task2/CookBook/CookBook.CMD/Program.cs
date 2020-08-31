@@ -41,76 +41,81 @@ namespace CookBook.CMD
             }
 
             Console.WriteLine("");
+        }
 
-            static int GetNumberCategory(CategoryController categoryController)
-            {
-                int numberSelectedCategory;
+        private static int GetNumberCategory(CategoryController categoryController)
+        {
+            int numberSelectedCategory;
 
-                do
-                {
-                    Console.Write("Выберете категорию: ");
-                    while (!int.TryParse(Console.ReadLine(), out numberSelectedCategory))
-                    {
-                        Console.WriteLine("Не корректный выбор (введите число)");
-                        Console.Write("Повторите выбор: ");
-                    }
-                } while (numberSelectedCategory > categoryController.Categories.Count);
-                return numberSelectedCategory;
-            }
-            static int GetNumberRecipe(RecipeController recipeController, int numberSelectedCategory)
+            do
             {
-                List<Recipe> recipesCategory = recipeController.GetSelectedRecipes(numberSelectedCategory);
-                int numberSelectedCRecipe;
-                do
+                Console.Write("Выберете категорию: ");
+                while (!int.TryParse(Console.ReadLine(), out numberSelectedCategory))
                 {
-                    Console.Write("Выберете рецепт: ");
-                    while (!int.TryParse(Console.ReadLine(), out numberSelectedCRecipe))
-                    {
-                        Console.WriteLine("Не корректный выбор (введите число)");
-                        Console.Write("Повторите выбор: ");
-                    }
-                } while (numberSelectedCRecipe > recipesCategory.Count);
-                return numberSelectedCRecipe;
-            }
-            static Recipe CreateRecipe(RecipeController recipeController)
-            {
-                Console.WriteLine("Создать рецепт");
-                Recipe recipe = recipeController.CreateRecipe();
-                recipeController.Recipes.Add(recipe);
-                recipeController.SaveRecipes();
-                return recipe;
-            }
-            static List<Ingredient> GetAllIngredients(RecipeController recipeController)
-            {
-                List<Ingredient> Ingredients = new List<Ingredient>();
-
-                foreach (var recipe in recipeController.Recipes)
-                {
-                    var ingredients = recipe.Ingredients;
-                    foreach (var item in ingredients)
-                    {
-                        Ingredients.Add(item);
-                    }
+                    Console.WriteLine("Не корректный выбор (введите число)");
+                    Console.Write("Повторите выбор: ");
                 }
+            } while (numberSelectedCategory > categoryController.Categories.Count);
+            return numberSelectedCategory;
+        }
 
-                return Ingredients;
-            }
-            static void SaveIngredients(List<Ingredient> allIngredients)
+        private static int GetNumberRecipe(RecipeController recipeController, int numberSelectedCategory)
+        {
+            List<Recipe> recipesCategory = recipeController.GetSelectedRecipes(numberSelectedCategory);
+            int numberSelectedCRecipe;
+            do
             {
-                var jsonFormatter = new DataContractJsonSerializer(typeof(List<Ingredient>));
-                using (var file = new FileStream("ingredient.json", FileMode.Create))
+                Console.Write("Выберете рецепт: ");
+                while (!int.TryParse(Console.ReadLine(), out numberSelectedCRecipe))
                 {
-                    jsonFormatter.WriteObject(file, allIngredients);
+                    Console.WriteLine("Не корректный выбор (введите число)");
+                    Console.Write("Повторите выбор: ");
+                }
+            } while (numberSelectedCRecipe > recipesCategory.Count);
+            return numberSelectedCRecipe;
+        }
+
+        private static Recipe CreateRecipe(RecipeController recipeController)
+        {
+            Console.WriteLine("Создать рецепт");
+            Recipe recipe = recipeController.CreateRecipe();
+            recipeController.Recipes.Add(recipe);
+            recipeController.SaveRecipes();
+            return recipe;
+        }
+
+        private static List<Ingredient> GetAllIngredients(RecipeController recipeController)
+        {
+            List<Ingredient> Ingredients = new List<Ingredient>();
+
+            foreach (var recipe in recipeController.Recipes)
+            {
+                var ingredients = recipe.Ingredients;
+                foreach (var item in ingredients)
+                {
+                    Ingredients.Add(item);
                 }
             }
-            static void ShowAllIngredients(List<Ingredient> allingredients)
+
+            return Ingredients;
+        }
+
+        private static void SaveIngredients(List<Ingredient> allIngredients)
+        {
+            var jsonFormatter = new DataContractJsonSerializer(typeof(List<Ingredient>));
+            using (var file = new FileStream("ingredient.json", FileMode.Create))
             {
-                foreach (var item in allingredients)
-                {
-                    Console.WriteLine($"-{item.Name}.");
-                }
-                Console.ReadLine();
+                jsonFormatter.WriteObject(file, allIngredients);
             }
+        }
+
+        private static void ShowAllIngredients(List<Ingredient> allingredients)
+        {
+            foreach (var item in allingredients)
+            {
+                Console.WriteLine($"-{item.Name}.");
+            }
+            Console.ReadLine();
         }
     }
 }

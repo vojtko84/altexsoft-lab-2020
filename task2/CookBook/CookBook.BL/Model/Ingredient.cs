@@ -1,20 +1,12 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
 
 namespace CookBook.BL.Model
 {
-    [DataContract]
+    [Serializable]
     public class Ingredient
     {
-        [DataMember]
         public string Name { get; set; }
 
-        [DataMember]
         public double Amount { get; set; }
-
-        public Ingredient(string name, double amount)
-        {
-            Name = name;
-            Amount = amount;
-        }
     }
 }

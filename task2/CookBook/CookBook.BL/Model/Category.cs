@@ -1,14 +1,12 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
 
 namespace CookBook.BL.Model
 {
-    [DataContract]
+    [Serializable]
     public class Category
     {
-        [DataMember]
         public int Id { get; set; }
 
-        [DataMember]
         public string Name { get; set; }
     }
 }
