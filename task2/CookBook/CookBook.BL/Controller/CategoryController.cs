@@ -1,41 +1,28 @@
-﻿using CookBook.BL.Model;
+﻿using CookBook.BL.Context;
+using CookBook.BL.Model;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
 
 namespace CookBook.BL.Controller
 {
     public class CategoryController
     {
-        public List<Category> Categories { get; }
-        private readonly string nameFile = "category.json";
+        private UnitOfWork unitOfWork;
 
-        public CategoryController()
+        public CategoryController(UnitOfWork unitOfWork)
         {
-            Categories = GetCategories();
+            this.unitOfWork = unitOfWork;
         }
 
         public List<Category> GetCategories()
         {
-            if (File.Exists(nameFile))
-            {
-                string json = File.ReadAllText(nameFile);
-
-                var data = JsonSerializer.Deserialize<List<Category>>(json);
-                return data;
-            }
-            else
-            {
-                Console.WriteLine("Файл не существует");
-                return null;
-            }
+            return unitOfWork.CategoryRepository.GetAll();
         }
 
         public void ShowCategories()
         {
             Console.WriteLine("Категории:");
-            foreach (var item in Categories)
+            foreach (var item in unitOfWork.CategoryRepository.GetAll())
             {
                 Console.WriteLine($"{item.Id}. {item.Name}");
             }

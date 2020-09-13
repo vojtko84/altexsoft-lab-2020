@@ -1,9 +1,8 @@
-﻿using CookBook.BL.Controller;
+﻿using CookBook.BL.Context;
+using CookBook.BL.Controller;
 using CookBook.BL.Model;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Json;
 
 namespace CookBook.CMD
 {
@@ -11,8 +10,11 @@ namespace CookBook.CMD
     {
         private static void Main(string[] args)
         {
-            CategoryController categoryController = new CategoryController();
-            RecipeController recipeController = new RecipeController();
+            JsonContext jsonContext = new JsonContext();
+            UnitOfWork unitOfWork = new UnitOfWork(jsonContext);
+            CategoryController categoryController = new CategoryController(unitOfWork);
+            RecipeController recipeController = new RecipeController(unitOfWork);
+            IngredientController ingredientController = new IngredientController(unitOfWork);
 
             categoryController.ShowCategories();
 
@@ -29,15 +31,15 @@ namespace CookBook.CMD
             if (choiceCreateRecipe.ToUpper() == "Y")
             {
                 CreateRecipe(recipeController);
+                jsonContext.Ingredients = ingredientController.GetAllIngredients();
+                ingredientController.SaveIngredients();
             }
-            List<Ingredient> allingredients = new List<Ingredient>();
-            allingredients = GetAllIngredients(recipeController);
-            SaveIngredients(allingredients);
+
             Console.WriteLine("Показать ингредиенты которые использовались в рецептах?(y/n)");
             string choiceShowIngredient = Console.ReadLine();
             if (choiceShowIngredient.ToUpper() == "Y")
             {
-                ShowAllIngredients(allingredients);
+                ingredientController.ShowAllIngredients();
             }
 
             Console.WriteLine("");
@@ -55,7 +57,7 @@ namespace CookBook.CMD
                     Console.WriteLine("Не корректный выбор (введите число)");
                     Console.Write("Повторите выбор: ");
                 }
-            } while (numberSelectedCategory > categoryController.Categories.Count);
+            } while (numberSelectedCategory > categoryController.GetCategories().Count);
             return numberSelectedCategory;
         }
 
@@ -79,43 +81,9 @@ namespace CookBook.CMD
         {
             Console.WriteLine("Создать рецепт");
             Recipe recipe = recipeController.CreateRecipe();
-            recipeController.Recipes.Add(recipe);
+            recipeController.GetRecipes().Add(recipe);
             recipeController.SaveRecipes();
             return recipe;
-        }
-
-        private static List<Ingredient> GetAllIngredients(RecipeController recipeController)
-        {
-            List<Ingredient> Ingredients = new List<Ingredient>();
-
-            foreach (var recipe in recipeController.Recipes)
-            {
-                var ingredients = recipe.Ingredients;
-                foreach (var item in ingredients)
-                {
-                    Ingredients.Add(item);
-                }
-            }
-
-            return Ingredients;
-        }
-
-        private static void SaveIngredients(List<Ingredient> allIngredients)
-        {
-            var jsonFormatter = new DataContractJsonSerializer(typeof(List<Ingredient>));
-            using (var file = new FileStream("ingredient.json", FileMode.Create))
-            {
-                jsonFormatter.WriteObject(file, allIngredients);
-            }
-        }
-
-        private static void ShowAllIngredients(List<Ingredient> allingredients)
-        {
-            foreach (var item in allingredients)
-            {
-                Console.WriteLine($"-{item.Name}.");
-            }
-            Console.ReadLine();
         }
     }
 }

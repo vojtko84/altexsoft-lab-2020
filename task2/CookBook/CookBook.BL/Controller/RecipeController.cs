@@ -1,41 +1,28 @@
-﻿using CookBook.BL.Model;
+﻿using CookBook.BL.Context;
+using CookBook.BL.Model;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text.Json;
 
 namespace CookBook.BL.Controller
 {
     public class RecipeController
     {
-        public List<Recipe> Recipes { get; set; }
-        private readonly string nameFile = "recipe.json";
+        private UnitOfWork unitOfWork;
 
-        public RecipeController()
+        public RecipeController(UnitOfWork unitOfWork)
         {
-            Recipes = GetRecipes();
+            this.unitOfWork = unitOfWork;
         }
 
         public List<Recipe> GetRecipes()
         {
-            if (File.Exists(nameFile))
-            {
-                string json = File.ReadAllText(nameFile);
-
-                var data = JsonSerializer.Deserialize<List<Recipe>>(json);
-                return data;
-            }
-            else
-            {
-                Console.WriteLine("Файл не существует");
-                return null;
-            }
+            return unitOfWork.RecipeRepository.GetAll();
         }
 
         public List<Recipe> GetSelectedRecipes(int numberSelectedCategory)
         {
-            var recipesCategory = (from recipe in Recipes
+            var recipesCategory = (from recipe in GetRecipes()
                                    where recipe.IdCategory == numberSelectedCategory
                                    select recipe).ToList<Recipe>();
             return recipesCategory;
@@ -72,8 +59,7 @@ namespace CookBook.BL.Controller
 
         public void SaveRecipes()
         {
-            string json = JsonSerializer.Serialize<List<Recipe>>(Recipes);
-            File.WriteAllText(nameFile, json);
+            unitOfWork.Save();
         }
 
         public Recipe CreateRecipe()
