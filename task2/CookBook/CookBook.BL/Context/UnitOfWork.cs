@@ -2,7 +2,7 @@
 
 namespace CookBook.BL.Context
 {
-    public class UnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private JsonContext db;
         private CategoryRepository categoryRepository;

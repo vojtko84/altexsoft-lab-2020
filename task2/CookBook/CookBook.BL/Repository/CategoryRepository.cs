@@ -5,10 +5,8 @@ using System.Collections.Generic;
 
 namespace CookBook.BL.Repository
 {
-    public class CategoryRepository : IRepository<Category>
+    public class CategoryRepository : BaseRepository, IRepository<Category>
     {
-        private JsonContext db;
-
         public CategoryRepository(JsonContext context)
         {
             this.db = context;

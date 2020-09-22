@@ -6,10 +6,8 @@ using System.Linq;
 
 namespace CookBook.BL.Controller
 {
-    public class RecipeController
+    public class RecipeController : BaseController
     {
-        private UnitOfWork unitOfWork;
-
         public RecipeController(UnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;

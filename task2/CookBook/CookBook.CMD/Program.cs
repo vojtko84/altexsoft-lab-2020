@@ -3,6 +3,7 @@ using CookBook.BL.Controller;
 using CookBook.BL.Model;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace CookBook.CMD
 {
@@ -10,6 +11,8 @@ namespace CookBook.CMD
     {
         private static void Main(string[] args)
         {
+            Console.InputEncoding = Encoding.Unicode;
+            Console.OutputEncoding = Encoding.Unicode;
             JsonContext jsonContext = new JsonContext();
             UnitOfWork unitOfWork = new UnitOfWork(jsonContext);
             CategoryController categoryController = new CategoryController(unitOfWork);

@@ -5,10 +5,8 @@ using System.Collections.Generic;
 
 namespace CookBook.BL.Controller
 {
-    public class IngredientController
+    public class IngredientController : BaseController
     {
-        private UnitOfWork unitOfWork;
-
         public IngredientController(UnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
