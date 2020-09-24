@@ -7,19 +7,18 @@ namespace CookBook.BL.Repository
 {
     public class IngredientRepository : BaseRepository, IRepository<Ingredient>
     {
-        public IngredientRepository(JsonContext context)
+        public IngredientRepository(JsonContext context) : base(context)
         {
-            this.db = context;
         }
 
         public List<Ingredient> GetAll()
         {
-            return db.Ingredients;
+            return Db.Ingredients;
         }
 
         public void Save()
         {
-            db.SaveIngredients();
+            Db.SaveIngredients();
         }
     }
 }

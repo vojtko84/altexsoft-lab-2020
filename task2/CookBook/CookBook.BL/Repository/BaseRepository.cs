@@ -2,8 +2,13 @@
 
 namespace CookBook.BL.Repository
 {
-    public class BaseRepository
+    public abstract class BaseRepository
     {
-        protected JsonContext db;
+        protected readonly JsonContext Db;
+
+        public BaseRepository(JsonContext context)
+        {
+            Db = context;
+        }
     }
 }

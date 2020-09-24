@@ -7,20 +7,19 @@ namespace CookBook.BL.Controller
 {
     public class CategoryController : BaseController
     {
-        public CategoryController(UnitOfWork unitOfWork)
+        public CategoryController(UnitOfWork unitOfWork) : base(unitOfWork)
         {
-            this.unitOfWork = unitOfWork;
         }
 
         public List<Category> GetCategories()
         {
-            return unitOfWork.CategoryRepository.GetAll();
+            return UnitOfWork.CategoryRepository.GetAll();
         }
 
         public void ShowCategories()
         {
             Console.WriteLine("Категории:");
-            foreach (var item in unitOfWork.CategoryRepository.GetAll())
+            foreach (var item in UnitOfWork.CategoryRepository.GetAll())
             {
                 Console.WriteLine($"{item.Id}. {item.Name}");
             }

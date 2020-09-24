@@ -2,8 +2,13 @@
 
 namespace CookBook.BL.Controller
 {
-    public class BaseController
+    public abstract class BaseController
     {
-        protected IUnitOfWork unitOfWork;
+        protected readonly IUnitOfWork UnitOfWork;
+
+        public BaseController(UnitOfWork unitOfWork)
+        {
+            UnitOfWork = unitOfWork;
+        }
     }
 }

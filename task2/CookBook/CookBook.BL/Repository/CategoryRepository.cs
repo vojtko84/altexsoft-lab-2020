@@ -7,14 +7,13 @@ namespace CookBook.BL.Repository
 {
     public class CategoryRepository : BaseRepository, IRepository<Category>
     {
-        public CategoryRepository(JsonContext context)
+        public CategoryRepository(JsonContext context) : base(context)
         {
-            this.db = context;
         }
 
         public List<Category> GetAll()
         {
-            return db.Categories;
+            return Db.Categories;
         }
     }
 }

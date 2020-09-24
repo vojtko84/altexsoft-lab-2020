@@ -7,15 +7,14 @@ namespace CookBook.BL.Controller
 {
     public class IngredientController : BaseController
     {
-        public IngredientController(UnitOfWork unitOfWork)
+        public IngredientController(UnitOfWork unitOfWork) : base(unitOfWork)
         {
-            this.unitOfWork = unitOfWork;
         }
 
         public List<Ingredient> GetAllIngredients()
         {
             List<Ingredient> ingredients = new List<Ingredient>();
-            foreach (var recipe in unitOfWork.RecipeRepository.GetAll())
+            foreach (var recipe in UnitOfWork.RecipeRepository.GetAll())
             {
                 var ingredient = recipe.Ingredients;
                 foreach (var item in ingredient)
@@ -28,12 +27,12 @@ namespace CookBook.BL.Controller
 
         public void SaveIngredients()
         {
-            unitOfWork.Save();
+            UnitOfWork.Save();
         }
 
         public void ShowAllIngredients()
         {
-            foreach (var item in unitOfWork.IngredientRepository.GetAll())
+            foreach (var item in UnitOfWork.IngredientRepository.GetAll())
             {
                 Console.WriteLine($"-{item.Name}.");
             }

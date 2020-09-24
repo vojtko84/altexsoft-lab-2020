@@ -8,14 +8,13 @@ namespace CookBook.BL.Controller
 {
     public class RecipeController : BaseController
     {
-        public RecipeController(UnitOfWork unitOfWork)
+        public RecipeController(UnitOfWork unitOfWork) : base(unitOfWork)
         {
-            this.unitOfWork = unitOfWork;
         }
 
         public List<Recipe> GetRecipes()
         {
-            return unitOfWork.RecipeRepository.GetAll();
+            return UnitOfWork.RecipeRepository.GetAll();
         }
 
         public List<Recipe> GetSelectedRecipes(int numberSelectedCategory)
@@ -57,7 +56,7 @@ namespace CookBook.BL.Controller
 
         public void SaveRecipes()
         {
-            unitOfWork.Save();
+            UnitOfWork.Save();
         }
 
         public Recipe CreateRecipe()
