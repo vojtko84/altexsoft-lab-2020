@@ -1,4 +1,4 @@
-CREATE TABLE [dbo].[Recipe](
+﻿CREATE TABLE [dbo].[Recipe](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[CategoryId] [int] NOT NULL,
 	[Name] [nvarchar](50) NOT NULL,
@@ -18,3 +18,4 @@ REFERENCES [dbo].[Category] ([Id])
 GO
 ALTER TABLE [dbo].[Recipe] CHECK CONSTRAINT [FK_Recipe_Category]
 GO
+

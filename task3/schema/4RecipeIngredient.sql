@@ -1,4 +1,4 @@
-CREATE TABLE [dbo].[RecipeIngredient](
+﻿CREATE TABLE [dbo].[RecipeIngredient](
 	[IngredientId] [int] NOT NULL,
 	[RecipeId] [int] NOT NULL,
 	[Amount] [float] NOT NULL,
@@ -24,3 +24,4 @@ REFERENCES [dbo].[Recipe] ([Id])
 GO
 ALTER TABLE [dbo].[RecipeIngredient] CHECK CONSTRAINT [FK_RecipeIngredient_Recipe]
 GO
+

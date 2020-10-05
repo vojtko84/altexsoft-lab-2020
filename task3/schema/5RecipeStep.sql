@@ -1,4 +1,4 @@
-CREATE TABLE [dbo].[RecipeStep](
+﻿CREATE TABLE [dbo].[RecipeStep](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[RecipeId] [int] NOT NULL,
 	[NumberStep] [int] NOT NULL,
@@ -14,3 +14,4 @@ REFERENCES [dbo].[Recipe] ([Id])
 GO
 ALTER TABLE [dbo].[RecipeStep] CHECK CONSTRAINT [FK_RecipeStep_Recipe]
 GO
+
